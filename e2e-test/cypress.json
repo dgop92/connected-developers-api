@@ -1,0 +1,10 @@
+{
+  "env": {
+    "apiUrl": "http://localhost:5000"
+  },
+  "reporter": "junit",
+  "reporterOptions": {
+    "mochaFile": "cypress.xml",
+    "toConsole": false
+  }
+}

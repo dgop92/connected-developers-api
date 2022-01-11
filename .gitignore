@@ -1,0 +1,8 @@
+/e2e-test/cypress.xml
+/e2e-test/node_modules
+/e2e-test/cypress/plugins
+/e2e-test/cypress/screenshots
+/e2e-test/cypress/support
+/e2e-test/cypress/videos
+
+/.idea

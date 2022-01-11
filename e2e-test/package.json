@@ -1,0 +1,13 @@
+{
+  "name": "python-connected-developers",
+  "version": "1.0.0",
+  "description": "Rviewer Python challenge",
+  "scripts": {
+    "e2e": "cypress run"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cypress": "^7.1.0"
+  }
+}

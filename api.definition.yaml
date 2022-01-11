@@ -1,0 +1,143 @@
+openapi: 3.0.0
+info:
+  title: Jobandtalent Connected Developers API
+  description: |
+    Connected Developers API is a REST API which will return whether two developers are fully connected or not, considering a fully connected accounts where they follow each other on Twitter and have a GitHub organization in common.
+  version: 1.0.0
+servers:
+  - url: 'https'
+paths:
+  /connected/realtime/{dev1}/{dev2}:
+    get:
+      summary: |
+        Check if two developers are connected and what GitHub organizations they have in common
+      parameters:
+        - name: dev1
+          description: Account of the first developer
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: dev2
+          description: Account of the second developer
+          required: true
+          in: path
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: Case they are connected
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectedDevelopersResponse'
+        '400':
+          description: Case any of them does not exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotExistingDeveloperResponse'
+        '404':
+          description: Case they are not connected
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotConnectedDevelopersResponse'
+
+  /connected/register/{dev1}/{dev2}:
+    get:
+      summary: |
+        This endpoint will return all the related information from previous requests to the real-time endpoint.
+      parameters:
+        - name: dev1
+          description: Account of the first developer
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: dev2
+          description: Account of the second developer
+          required: true
+          in: path
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: Case they have been registered through the realtime enpdoint
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisteredDevelopersResponse'
+        '404':
+          description: Case they are not registered
+
+components:
+  schemas:
+    ConnectedDevelopersResponse:
+      type: object
+      required:
+        - connected
+        - organisations
+      properties:
+        connected:
+          type: boolean
+          example: true
+        organisations:
+          type: array
+          items:
+            type: string
+          example: [
+            'org1',
+            'org2'
+          ]
+
+    NotConnectedDevelopersResponse:
+      type: object
+      required:
+        - connected
+      properties:
+        connected:
+          type: boolean
+          example: false
+
+    NotExistingDeveloperResponse:
+      type: object
+      required:
+        - errors
+      properties:
+        errors:
+          type: array
+          items:
+            type: string
+          example: [
+            'dev1 is not a valid user in github',
+            'dev1 is not a valid user in twitter',
+            'dev2 is not a valid user in twitter'
+          ]
+
+    RegisteredDevelopersResponse:
+      type: array
+      items:
+        anyOf:
+          - $ref: '#/components/schemas/TimedConnectedDevelopersResponse'
+          - $ref: '#/components/schemas/TimedNotConnectedDevelopersResponse'
+
+    TimedConnectedDevelopersResponse:
+      allOf:
+        - type: object
+          properties:
+            registered_at:
+              type: string
+              format: date-time
+        - $ref: '#/components/schemas/ConnectedDevelopersResponse'
+
+    TimedNotConnectedDevelopersResponse:
+      allOf:
+        - type: object
+          properties:
+            registered_at:
+              type: string
+              format: date-time
+        - $ref: '#/components/schemas/NotConnectedDevelopersResponse'
