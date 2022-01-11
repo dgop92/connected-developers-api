@@ -38,3 +38,4 @@ sqlparse==0.4.2
 toml==0.10.2
 tomli==1.2.3
 virtualenv==20.13.0
+whitenoise==5.2.0
