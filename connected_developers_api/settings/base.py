@@ -77,3 +77,5 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+TWITER_BEARER_TOKEN = config("TWITER_BEARER_TOKEN")
