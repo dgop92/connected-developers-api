@@ -39,14 +39,14 @@ def are_fully_connected(
     account_errors = []
 
     if not dev1OrgProvider.account_exits:
-        account_errors.append("dev1 is not a valid user in github")
+        account_errors.append("{dev1} is not a valid user in github")
     if not dev2OrgProvider.account_exits:
-        account_errors.append("dev2 is not a valid user in github")
+        account_errors.append("{dev2} is not a valid user in github")
 
     if not dev1FollowProvider.account_exits:
-        account_errors.append("dev1 is not a valid user in twitter")
+        account_errors.append("{dev1} is not a valid user in twitter")
     if not dev2FollowProvider.account_exits:
-        account_errors.append("dev2 is not a valid user in twitter")
+        account_errors.append("{dev2} is not a valid user in twitter")
 
     # if one account doesn't exist, they cannot be fully connected
     if len(account_errors) != 0:

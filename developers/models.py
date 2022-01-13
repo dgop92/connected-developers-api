@@ -20,6 +20,7 @@ class DevRegister(models.Model):
     )
     connected = models.BooleanField(default=False)
     registered_at = models.DateTimeField(auto_now_add=True)
+    organizations = models.ManyToManyField(Organization)
 
     class Meta:
-        ordering = ["-registered_at"]
+        ordering = ["registered_at"]

@@ -1,4 +1,3 @@
-from django.db.models import Q
 from django.test import TestCase
 from test_utils import InstanceAssertionsMixin
 
@@ -24,29 +23,6 @@ class TestModels(TestCase, InstanceAssertionsMixin):
         dev1.organizations.add(*organizations)
         dev2.organizations.add(*organizations)
 
-        DevRegister.objects.create(dev1=dev1, dev2=dev2, connected=False)
+        dev_reg = DevRegister.objects.create(dev1=dev1, dev2=dev2, connected=False)
+        dev_reg.organizations.add(*organizations)
         self.assert_instance_exists(DevRegister, dev1=dev1, dev2=dev2)
-
-    def test_registers_of_devs(self):
-
-        dev1 = Dev.objects.create(username="d1")
-        dev2 = Dev.objects.create(username="d2")
-        org1 = Organization.objects.create(name="git")
-        org2 = Organization.objects.create(name="lab")
-        dev1.organizations.add(org1)
-        dev1.organizations.add(org1)
-
-        DevRegister.objects.create(dev1=dev1, dev2=dev2, connected=True)
-
-        dev1.organizations.remove(org1)
-        dev2.organizations.add(org2)
-
-        DevRegister.objects.create(dev1=dev2, dev2=dev1, connected=False)
-
-        registers = DevRegister.objects.filter(
-            Q(dev1=dev1) & Q(dev2=dev2) | Q(dev1=dev2) & Q(dev2=dev1)
-        )
-
-        # last events are fisrt
-        self.assertFalse(registers[0].connected)
-        self.assertTrue(registers[1].connected)
