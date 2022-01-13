@@ -38,7 +38,7 @@ def register_new_devs(dev1_username, dev2_username, connected_data):
     dev_reg = DevRegister.objects.create(
         dev1=dev1, dev2=dev2, connected=connected_data["connected"]
     )
-    dev_reg.organizations.add(organizations)
+    dev_reg.organizations.add(*organizations)
 
 
 @api_view(["GET"])
@@ -47,6 +47,12 @@ def realtime_view(request, dev1, dev2):
     """
     Check if two developers are connected and what GitHub organizations they have in common
     """
+
+    if dev1 == dev2:
+        return Response(
+            {"detail": "both dev are the same person"},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
 
     dt1 = BasicFollowEachOtherProvider(client, dev1, dev2)
     dt2 = BasicFollowEachOtherProvider(client, dev2, dev1)

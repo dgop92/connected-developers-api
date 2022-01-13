@@ -3,11 +3,13 @@
 import os
 import sys
 
+from decouple import config
+
+DJANGO_SETTINGS_MODULE = config("DJANGO_SETTINGS_MODULE")
+
 
 def main():
-    os.environ.setdefault(
-        "DJANGO_SETTINGS_MODULE", "connected_developers_api.settings.deveploment"
-    )
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", DJANGO_SETTINGS_MODULE)
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
